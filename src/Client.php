@@ -15,7 +15,7 @@ class Client
 
     public function __construct($host = "127.0.0.1", $port = 5658)
     {
-        $this->connecton = Connection($host, $port);
+        $this->connecton = new Connection($host, $port);
     }
 
     public function Lock($lock_name, $timeout=5, $expried=10, $max_count=1){

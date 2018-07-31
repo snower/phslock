@@ -24,7 +24,7 @@ class Connection
     }
 
     public function Open(){
-        $address = gethostbyname($this->port);
+        $address = gethostbyname($this->host);
 
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         if ($socket === false) {
@@ -52,8 +52,7 @@ class Connection
             $this->Open();
         }
 
-        $command = $command.Dumps();
-        socket_write($this->socket, $command, 64);
+        socket_write($this->socket, $command->Dumps(), 64);
     }
 
     public function Read(){

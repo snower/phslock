@@ -39,10 +39,10 @@ class Lock
         }
         $this->max_count = $max_count;
 
-        for($i=strlen($this->lock_name); $i < 64; $i++){
+        for($i=strlen($this->lock_name); $i < 16; $i++){
             $this->lock_name .= pack("C", 0);
         }
-        for($i=strlen($this->lock_id); $i < 64; $i++){
+        for($i=strlen($this->lock_id); $i < 16; $i++){
             $this->lock_id .= pack("C", 0);
         }
     }
@@ -56,23 +56,24 @@ class Lock
     {
         $command = new Command(Command::$COMMAND_TYPE_LOCK, $this->lock_id, $this->db_id, $this->lock_name, $this->timeout, $this->expried, 0, max($this->max_count - 1, 0));
         $result = $this->db->Command($command);
-        $this->CheckResult($result);
+        return $this->CheckResult($result);
     }
 
     public function Release()
     {
         $command = new Command(Command::$COMMAND_TYPE_UNLOCK, $this->lock_id, $this->db_id, $this->lock_name, $this->timeout, $this->expried, 0, max($this->max_count - 1, 0));
         $result = $this->db->Command($command);
-        $this->CheckResult($result);
+        return $this->CheckResult($result);
     }
 
     protected function CheckResult($result)
     {
         if ($result->command == Command::$COMMAND_TYPE_LOCK) {
-            $this->CheckLockResult($result);
+            return $this->CheckLockResult($result);
         } else if ($result->command == Command::$COMMAND_TYPE_UNLOCK) {
-            $this->CheckUnLockResult($result);
+            return $this->CheckUnLockResult($result);
         }
+        return false;
     }
 
     protected function CheckLockResult($result){
