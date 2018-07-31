@@ -1,0 +1,33 @@
+{
+    "name": "snower/phslock",
+    "description": "High-performance distributed shared lock service php client",
+    "keywords": ["slock", "laravel", "sdk"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "snower",
+            "email": "snower199@gmail.com"
+        }
+    ],
+    "require": {
+    },
+    "require-dev": {
+        "laravel/framework": "5.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Snower\\Phslock\\": "src/"
+        }
+    },
+    "minimum-stability" : "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Snower\\Phslock\\Laravel\\ServiceProvider"
+            ],
+            "aliases": {
+                "Forsun": "Snower\\Phslock\\Laravel\\Facade"
+            }
+        }
+    }
+}
