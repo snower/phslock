@@ -9,6 +9,7 @@
 namespace Snower\Phslock;
 
 use Snower\Phslock\Errors\ConnectionConnectError;
+use Snower\Phslock\Errors\ConnectionClosedError;
 
 class Connection
 {
@@ -36,6 +37,8 @@ class Connection
             throw new ConnectionConnectError(socket_strerror(socket_last_error($socket)));
         }
 
+        socket_set_option($socket, SOL_SOCKET, TCP_NODELAY, 1);
+
         $this->socket = $socket;
         return true;
     }
@@ -57,6 +60,10 @@ class Connection
 
     public function Read(){
         $data = socket_read($this->socket, 64);
+        if(empty($data)) {
+            $this->Close();
+            throw new ConnectionClosedError();
+        }
         return new Result($data);
     }
 }
