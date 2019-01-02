@@ -25,19 +25,19 @@ class Connection
     }
 
     public function Open(){
-        $address = gethostbyname($this->host);
+        $address = @gethostbyname($this->host);
 
-        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-        if ($socket === false) {
+        $socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        if (!$socket) {
             throw new ConnectionConnectError(socket_strerror(socket_last_error()));
         }
 
-        $result = socket_connect($socket, $address, $this->port);
-        if ($result === false) {
+        $result = @socket_connect($socket, $address, $this->port);
+        if (!$result) {
             throw new ConnectionConnectError(socket_strerror(socket_last_error($socket)));
         }
 
-        socket_set_option($socket, SOL_SOCKET, TCP_NODELAY, 1);
+        @socket_set_option($socket, SOL_SOCKET, TCP_NODELAY, 1);
 
         $this->socket = $socket;
         return true;
@@ -55,12 +55,21 @@ class Connection
             $this->Open();
         }
 
-        socket_write($this->socket, $command->Dumps(), 64);
+        $data = $command->Dumps();
+        $result = socket_write($this->socket, $data, 64);
+        if (!$result) {
+            $this->Close();
+            $this->Open();
+            $result = socket_write($this->socket, $data, 64);
+            if(!$result){
+                throw new ConnectionClosedError();
+            }
+        }
     }
 
     public function Read(){
         $data = socket_read($this->socket, 64);
-        if(empty($data)) {
+        if (!$data) {
             $this->Close();
             throw new ConnectionClosedError();
         }
