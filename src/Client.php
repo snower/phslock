@@ -18,12 +18,16 @@ class Client
         $this->connecton = new Connection($host, $port);
     }
 
-    public function Lock($lock_name, $timeout=5, $expried=10, $max_count=1){
-        return $this->SelectDB(0)->Lock($lock_name, $timeout, $expried, $max_count);
+    public function Lock($lock_name, $timeout=5, $expried=10){
+        return $this->SelectDB(0)->Lock($lock_name, $timeout, $expried);
     }
 
     public function Event($event_name, $timeout=5, $expried=10){
         return $this->SelectDB(0)->Event($event_name, $timeout, $expried);
+    }
+
+    public function CycleEvent($event_name, $timeout=5, $expried=10){
+        return $this->SelectDB(0)->CycleEvent($event_name, $timeout, $expried);
     }
 
     public function SelectDB($db){

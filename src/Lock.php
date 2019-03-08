@@ -52,16 +52,16 @@ class Lock
         return hex2bin(uniqid('0')) . openssl_random_pseudo_bytes(9);
     }
 
-    public function Acquire()
+    public function Acquire($flag = 0)
     {
-        $command = new Command(Command::$COMMAND_TYPE_LOCK, $this->lock_id, $this->db_id, $this->lock_name, $this->timeout, $this->expried, 0, max($this->max_count - 1, 0));
+        $command = new Command(Command::$COMMAND_TYPE_LOCK, $this->lock_id, $this->db_id, $this->lock_name, $this->timeout, $this->expried, $flag, max($this->max_count - 1, 0));
         $result = $this->db->Command($command);
         return $this->CheckResult($result);
     }
 
-    public function Release()
+    public function Release($flag = 0)
     {
-        $command = new Command(Command::$COMMAND_TYPE_UNLOCK, $this->lock_id, $this->db_id, $this->lock_name, $this->timeout, $this->expried, 0, max($this->max_count - 1, 0));
+        $command = new Command(Command::$COMMAND_TYPE_UNLOCK, $this->lock_id, $this->db_id, $this->lock_name, $this->timeout, $this->expried, $flag, max($this->max_count - 1, 0));
         $result = $this->db->Command($command);
         return $this->CheckResult($result);
     }

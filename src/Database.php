@@ -19,12 +19,16 @@ class Database
         $this->db_id = $db_id;
     }
 
-    public function Lock($lock_name, $timeout=5, $expried=10, $max_count=1){
-        return new Lock($this, $lock_name, $timeout, $expried, null, $max_count);
+    public function Lock($lock_name, $timeout=5, $expried=10){
+        return new Lock($this, $lock_name, $timeout, $expried);
     }
 
     public function Event($event_name, $timeout=5, $expried=10){
         return new Event($this, $event_name, $timeout, $expried);
+    }
+
+    public function CycleEvent($event_name, $timeout=5, $expried=10){
+        return new CycleEvent($this, $event_name, $timeout, $expried);
     }
 
     public function Command($command) {
