@@ -30,6 +30,14 @@ class Client
         return $this->SelectDB(0)->CycleEvent($event_name, $timeout, $expried);
     }
 
+    public function Semaphore($semaphore_name, $timeout=5, $expried=10, $count=1){
+        return $this->SelectDB(0)->Semaphore($semaphore_name, $timeout, $expried, $count);
+    }
+
+    public function RWLock($lock_name, $timeout=5, $expried=10){
+        return $this->SelectDB(0)->RWLock($lock_name, $timeout, $expried);
+    }
+
     public function SelectDB($db){
         if(!isset($this->dbs[$db])){
             $this->dbs[$db] = new Database($this, $db);

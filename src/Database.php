@@ -31,6 +31,14 @@ class Database
         return new CycleEvent($this, $event_name, $timeout, $expried);
     }
 
+    public function Semaphore($semaphore_name, $timeout=5, $expried=10, $count=1){
+        return new Semaphore($this, $semaphore_name, $timeout, $expried, $count);
+    }
+
+    public function RWLock($lock_name, $timeout=5, $expried=10){
+        return new RWLock($this, $lock_name, $timeout, $expried);
+    }
+
     public function Command($command) {
         return $this->client->SendCommand($command);
     }
