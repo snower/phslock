@@ -39,6 +39,10 @@ class Database
         return new RWLock($this, $lock_name, $timeout, $expried);
     }
 
+    public function RLock($lock_name, $timeout=5, $expried=10){
+        return new RLock($this, $lock_name, $timeout, $expried);
+    }
+
     public function Command($command) {
         return $this->client->SendCommand($command);
     }

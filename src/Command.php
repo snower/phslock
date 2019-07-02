@@ -24,8 +24,9 @@ class Command
     public $timeout = 5;
     public $expried = 10;
     public $count = 0;
+    public $rcount = 0;
 
-    public function __construct($command, $lock_id, $db_id, $lock_name='', $timeout=0, $expried=0, $flag=0, $count=0)
+    public function __construct($command, $lock_id, $db_id, $lock_name='', $timeout=0, $expried=0, $flag=0, $count=0, $rcount=0)
     {
         $this->request_id = $this->Generate();
         $this->command = $command;
@@ -36,6 +37,7 @@ class Command
         $this->timeout = $timeout;
         $this->expried = $expried;
         $this->count = $count;
+        $this->rcount = $rcount;
     }
 
     public static function Generate()
@@ -47,6 +49,6 @@ class Command
     {
         return pack("CCC", static::$MAGIC, static::$VERSION, $this->command) . $this->request_id .
             pack("CC", $this->flag, $this->db_id) . $this->lock_id . $this->lock_name .
-            pack("VVvC", $this->timeout, $this->expried, $this->count, 0x00);
+            pack("VVvC", $this->timeout, $this->expried, $this->count, $this->rcount);
     }
 }

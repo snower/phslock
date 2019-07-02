@@ -38,6 +38,10 @@ class Client
         return $this->SelectDB(0)->RWLock($lock_name, $timeout, $expried);
     }
 
+    public function RLock($lock_name, $timeout=5, $expried=10){
+        return $this->SelectDB(0)->RLock($lock_name, $timeout, $expried);
+    }
+
     public function SelectDB($db){
         if(!isset($this->dbs[$db])){
             $this->dbs[$db] = new Database($this, $db);

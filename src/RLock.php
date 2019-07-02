@@ -2,46 +2,49 @@
 /**
  * Created by PhpStorm.
  * User: snower
- * Date: 19/3/20
- * Time: 下午4:16
+ * Date: 2019/7/2
+ * Time: 10:48 AM
  */
 
 namespace Snower\Phslock;
 
 
+use Snower\Phslock\Errors\LockLockedError;
 use Snower\Phslock\Errors\LockUnlockedError;
 
-class Semaphore
+class RLock
 {
     protected $db = null;
     protected $db_id = 0;
-    protected $semaphore_name = '';
+    protected $lock_name = '';
     protected $locks = null;
     protected $timeout = 0;
     protected $expried = 0;
-    protected $count = 1;
 
-    public function __construct($db, $semaphore_name, $timeout=5, $expried=65, $count=1)
+    public function __construct($db, $lock_name, $timeout=5, $expried=65, $count=1)
     {
         $this->db = $db;
         $this->db_id = $db->GetDbId();
-        $this->semaphore_name = $semaphore_name;
+        $this->lock_name = $lock_name;
         $this->locks = [];
         $this->timeout = $timeout;
         $this->expried = $expried;
-        $this->count = $count;
     }
 
     public function Acquire()
     {
-        $lock = new Lock($this->db, $this->semaphore_name, $this->timeout, $this->expried, null, $this->count);
+        if(count($this->locks) >= 0xff) {
+            throw new LockLockedError();
+        }
+
+        $lock = new Lock($this->db, $this->lock_name, $this->timeout, $this->expried, null, 1, 0xff);
         $lock->Acquire();
         array_push($this->locks, $lock);
     }
 
     public function Release()
     {
-        $lock = array_shift($this->locks);
+        $lock = array_pop($this->locks);
         if($lock == null) {
             throw new LockUnlockedError();
         }

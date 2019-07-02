@@ -24,8 +24,9 @@ class Lock
     protected $expried = 10;
     protected $lock = false;
     protected $max_count = 0;
+    protected $reentrant_count = 0;
 
-    public function __construct($db, $lock_name, $timeout = 5, $expried = 10, $lock_id = null, $max_count = 1)
+    public function __construct($db, $lock_name, $timeout = 5, $expried = 10, $lock_id = null, $max_count = 1, $reentrant_count = 0)
     {
         $this->db = $db;
         $this->db_id = $db->GetDbId();
@@ -38,12 +39,13 @@ class Lock
             $this->lock_id = $lock_id;
         }
         $this->max_count = $max_count;
+        $this->reentrant_count = $reentrant_count;
 
         for($i=strlen($this->lock_name); $i < 16; $i++){
-            $this->lock_name .= pack("C", 0);
+            $this->lock_name = pack("C", 0) . $this->lock_name;
         }
         for($i=strlen($this->lock_id); $i < 16; $i++){
-            $this->lock_id .= pack("C", 0);
+            $this->lock_id = pack("C", 0) . $this->lock_id;
         }
     }
 
@@ -54,14 +56,14 @@ class Lock
 
     public function Acquire($flag = 0)
     {
-        $command = new Command(Command::$COMMAND_TYPE_LOCK, $this->lock_id, $this->db_id, $this->lock_name, $this->timeout, $this->expried, $flag, max($this->max_count - 1, 0));
+        $command = new Command(Command::$COMMAND_TYPE_LOCK, $this->lock_id, $this->db_id, $this->lock_name, $this->timeout, $this->expried, $flag, max($this->max_count - 1, 0), $this->reentrant_count);
         $result = $this->db->Command($command);
         return $this->CheckResult($result);
     }
 
     public function Release($flag = 0)
     {
-        $command = new Command(Command::$COMMAND_TYPE_UNLOCK, $this->lock_id, $this->db_id, $this->lock_name, $this->timeout, $this->expried, $flag, max($this->max_count - 1, 0));
+        $command = new Command(Command::$COMMAND_TYPE_UNLOCK, $this->lock_id, $this->db_id, $this->lock_name, $this->timeout, $this->expried, $flag, max($this->max_count - 1, 0), $this->reentrant_count);
         $result = $this->db->Command($command);
         return $this->CheckResult($result);
     }
