@@ -33,6 +33,7 @@ class Result
     public $lock_name = '';
     public $lcount = 0;
     public $count = 0;
+    public $lrcount = 0;
     public $rcount = 0;
 
     public function __construct($data)
@@ -44,10 +45,11 @@ class Result
         $this->result = ord($data[19]);
         $this->flag = ord($data[20]);
         $this->db_id = ord($data[21]);
-        $this->lock_id = substr($data, 11, 16);
+        $this->lock_id = substr($data, 22, 16);
         $this->lock_name = substr($data, 38, 16);
         $this->lcount = unpack("v", substr($data, 54, 2))[0];
         $this->count = unpack("v", substr($data, 56, 2))[0];
+        $this->lrcount = ord($data[58]);
         $this->rcount = ord($data[59]);
     }
 }

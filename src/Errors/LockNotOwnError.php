@@ -9,7 +9,7 @@
 namespace Snower\Phslock\Errors;
 
 
-class LockUnlockNotOwnError extends LockException
+class LockNotOwnError extends LockException
 {
 
 }

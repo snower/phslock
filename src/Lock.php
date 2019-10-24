@@ -9,10 +9,11 @@
 namespace Snower\Phslock;
 
 use Snower\Phslock\Errors\LockLockedError;
-use Snower\Phslock\Errors\LockTimeoutError;
 use Snower\Phslock\Errors\LockUnknownError;
 use Snower\Phslock\Errors\LockUnlockedError;
-use Snower\Phslock\Errors\LockUnlockNotOwnError;
+use Snower\Phslock\Errors\LockNotOwnError;
+use Snower\Phslock\Errors\LockTimeoutError;
+use Snower\Phslock\Errors\LockExpriedError;
 
 class Lock
 {
@@ -75,21 +76,28 @@ class Lock
         } else if ($result->command == Command::$COMMAND_TYPE_UNLOCK) {
             return $this->CheckUnLockResult($result);
         }
-        return false;
+        return $result;
     }
 
     protected function CheckLockResult($result){
         if($result->result == Result::$RESULT_SUCCED){
             $this->lock = True;
-            return true;
+            return $result;
         }
 
-        if($result->result == Result::$RESULT_LOCKED_ERROR){
-            throw new LockLockedError();
-        }else if($result->result == Result::$RESULT_TIMEOUT){
-            throw new LockTimeoutError();
-        }else{
-            throw new LockUnknownError();
+        switch ($result->result) {
+            case Result::$RESULT_LOCKED_ERROR:
+                throw new LockLockedError($result);
+            case Result::$RESULT_UNLOCK_ERROR:
+                throw new LockLockedError($result);
+            case Result::$RESULT_UNOWN_ERROR:
+                throw new LockNotOwnError($result);
+            case Result::$RESULT_TIMEOUT:
+                throw new LockTimeoutError($result);
+            case Result::$RESULT_EXPRIED:
+                throw new LockExpriedError($result);
+            default:
+                throw new LockUnknownError($result);
         }
     }
 
@@ -97,15 +105,22 @@ class Lock
     {
         if ($result->result == Result::$RESULT_SUCCED) {
             $this->lock = false;
-            return true;
+            return $result;
         }
 
-        if ($result->result == Result::$RESULT_UNLOCK_ERROR) {
-            throw new LockUnlockedError();
-        } else if ($result->result == Result::$RESULT_UNOWN_ERROR) {
-            throw new LockUnlockNotOwnError();
-        } else {
-            throw new LockUnknownError();
+        switch ($result->result) {
+            case Result::$RESULT_LOCKED_ERROR:
+                throw new LockLockedError($result);
+            case Result::$RESULT_UNLOCK_ERROR:
+                throw new LockUnlockedError($result);
+            case Result::$RESULT_UNOWN_ERROR:
+                throw new LockNotOwnError($result);
+            case Result::$RESULT_TIMEOUT:
+                throw new LockTimeoutError($result);
+            case Result::$RESULT_EXPRIED:
+                throw new LockExpriedError($result);
+            default:
+                throw new LockUnknownError($result);
         }
     }
 }
