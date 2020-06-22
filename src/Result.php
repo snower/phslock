@@ -47,8 +47,8 @@ class Result
         $this->db_id = ord($data[21]);
         $this->lock_id = substr($data, 22, 16);
         $this->lock_name = substr($data, 38, 16);
-        $this->lcount = unpack("v", substr($data, 54, 2))[0];
-        $this->count = unpack("v", substr($data, 56, 2))[0];
+        $this->lcount = unpack("vlcount", substr($data, 54, 2))['lcount'];
+        $this->count = unpack("vcount", substr($data, 56, 2))['count'];
         $this->lrcount = ord($data[58]);
         $this->rcount = ord($data[59]);
     }
