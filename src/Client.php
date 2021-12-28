@@ -22,12 +22,8 @@ class Client
         return $this->SelectDB(0)->Lock($lock_name, $timeout, $expried);
     }
 
-    public function Event($event_name, $timeout=5, $expried=10){
-        return $this->SelectDB(0)->Event($event_name, $timeout, $expried);
-    }
-
-    public function CycleEvent($event_name, $timeout=5, $expried=10){
-        return $this->SelectDB(0)->CycleEvent($event_name, $timeout, $expried);
+    public function Event($event_name, $timeout=5, $expried=10, $default_seted=true){
+        return $this->SelectDB(0)->Event($event_name, $timeout, $expried, $default_seted);
     }
 
     public function Semaphore($semaphore_name, $timeout=5, $expried=10, $count=1){
