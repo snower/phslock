@@ -1,7 +1,7 @@
 # phslock
-
+          
 [![Software license][ico-license]](LICENSE)
-[![Latest stable][ico-version-stable]][link-packagist]
+[![Latest stable][ico-version-stable]][link-packagist] 
 [![Latest development][ico-version-dev]][link-packagist]
 [![Monthly installs][ico-downloads-monthly]][link-downloads]
 
@@ -67,3 +67,11 @@ class TestSlockEvent extends Command
 # License
 
 slock uses the MIT license, see LICENSE file for the details.
+
+[ico-license]: https://img.shields.io/github/license/snower/phslock.svg?style=flat-square
+[ico-version-stable]: https://img.shields.io/packagist/v/snower/phslock.svg?style=flat-square
+[ico-version-dev]: https://img.shields.io/packagist/vpre/snower/phslock.svg?style=flat-square
+[ico-downloads-monthly]: https://img.shields.io/packagist/dm/snower/phslock.svg?style=flat-square
+
+[link-packagist]: https://packagist.org/packages/snower/phslock
+[link-downloads]: https://packagist.org/packages/snower/phslock/stats
