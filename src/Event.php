@@ -25,6 +25,7 @@ class Event
     protected $wait_lock = null;
     protected $timeout = 0;
     protected $expried = 0;
+    protected $default_seted = true;
 
     public function __construct($db, $event_name, $timeout=5, $expried=65, $default_seted=true)
     {

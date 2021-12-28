@@ -19,12 +19,12 @@ class Database
         $this->db_id = $db_id;
     }
 
-    public function Lock($lock_name, $timeout=5, $expried=10, $default_seted=true){
-        return new Lock($this, $lock_name, $timeout, $expried, $default_seted);
+    public function Lock($lock_name, $timeout=5, $expried=10){
+        return new Lock($this, $lock_name, $timeout, $expried);
     }
 
-    public function Event($event_name, $timeout=5, $expried=10){
-        return new Event($this, $event_name, $timeout, $expried);
+    public function Event($event_name, $timeout=5, $expried=10, $default_seted=true){
+        return new Event($this, $event_name, $timeout, $expried, $default_seted);
     }
 
     public function Semaphore($semaphore_name, $timeout=5, $expried=10, $count=1){

@@ -6,11 +6,11 @@
  * Time: 上午11:32
  */
 
-namespace Snower\Phslock\Laravel;
+namespace Snower\Phslock\Laravel\Facades;
 
-use Illuminate\Support\Facades\Facade as LaravelFacade;
+use Illuminate\Support\Facades\Facade;
 
-class Facade extends LaravelFacade
+class Phslock extends Facade
 {
 
     public static function getFacadeAccessor()

@@ -57,14 +57,16 @@ class Lock
 
     public function Acquire($flag = 0)
     {
-        $command = new Command(Command::$COMMAND_TYPE_LOCK, $this->lock_id, $this->db_id, $this->lock_name, $this->timeout, $this->expried, $flag, max($this->max_count - 1, 0), $this->reentrant_count);
+        $command = new Command(Command::$COMMAND_TYPE_LOCK, $this->lock_id, $this->db_id, $this->lock_name, $this->timeout,
+            $this->expried, $flag, max($this->max_count - 1, 0), max($this->reentrant_count - 1, 0));
         $result = $this->db->Command($command);
         return $this->CheckResult($result);
     }
 
     public function Release($flag = 0)
     {
-        $command = new Command(Command::$COMMAND_TYPE_UNLOCK, $this->lock_id, $this->db_id, $this->lock_name, $this->timeout, $this->expried, $flag, max($this->max_count - 1, 0), $this->reentrant_count);
+        $command = new Command(Command::$COMMAND_TYPE_UNLOCK, $this->lock_id, $this->db_id, $this->lock_name, $this->timeout,
+            $this->expried, $flag, max($this->max_count - 1, 0), max($this->reentrant_count -1, 0));
         $result = $this->db->Command($command);
         return $this->CheckResult($result);
     }
