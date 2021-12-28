@@ -1,5 +1,10 @@
 # phslock
 
+[![Software license][ico-license]](LICENSE)
+[![Latest stable][ico-version-stable]][link-packagist]
+[![Latest development][ico-version-dev]][link-packagist]
+[![Monthly installs][ico-downloads-monthly]][link-downloads]
+
 High-performance distributed sync service and atomic DB. Provides good multi-core support through lock queues, high-performance asynchronous binary network protocols. Can be used for spikes, synchronization, event notification, concurrency control. https://github.com/snower/slock
 
 # Install
